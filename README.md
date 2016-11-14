@@ -2,7 +2,7 @@
 GeoAdmin - Basic Docker Tomcat Example 
 ===========================
 
-This is the most basic Docker Tomcat example to demonstrate how an image is built using a Dockerfile that copies a sample Java WAR file. Once you build your own Tomcat image, you can push it to your Docker Hub repository and then run a container using this image on any Linux host that is Docker-enabled.
+Simple Docker Tomcat example to host the legacy print-server-main.war.
 
 ### Clone this project
 
@@ -16,21 +16,19 @@ git clone https://github.com/procrastinatio/docker-tomcat-print.git
 cd into the directory of the cloned GitHub project
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-docker build -t <your-username>/docker-tomcat-print:latest .
+docker build -t procrastinatio/docker-tomcat-print:latest .
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-### Sign up for an account on Docker Hub and create a public tomcat repository
-
--   Sign up for a free account on Docker Hub – <a href="https://hub.docker.com/">***https://hub.docker.com/***</a>
-
--   Create a public repository called “tomcat”
 
 ### Push the created image to your Docker Hub repository
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 docker login
-docker push <your-username>/docker-tomcat-print:latest
+docker push procrastinatio/docker-tomcat-print:latest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Get it from Docker GitHub
+
+https://hub.docker.com/r/procrastinatio/docker-tomcat-print/
 
 ### Run the container on a Docker-enabled Linux host
 
@@ -41,54 +39,71 @@ docker run -p 9090:8080 -d --name tomcat  <your-username>/docker-tomcat-print:la
 ### Access the sample application
 
 You can access the sample application on this URL:
-http://<host-ip>:9090/service-print-main/
+
+    http://<host-ip>:9090/service-print-main/
 
 ### Get the print info
 
-http://<host-ip>:9090/service-print-main/pdf/info.json
+    http://<host-ip>:9090/service-print-main/pdf/info.json
 
 ### Create a PDF
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-curl 'http://localhost:9090/service-print-main/pdf/create.json' -H 'Origin: http://service-print.dev.bgdi.ch' -H 'Content-Type: application/json'  -H 'Referer: http://service-print.dev.bgdi.ch/service-print-main/' --data @data.json
+curl 'http://localhost:9090/service-print-main/pdf/create.json' -H 'Content-Type: application/json' \
+   -H 'Referer: http://service-print.dev.bgdi.ch/service-print-main/' --data @data.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 With `data.json`
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- {
-     layout: '1 A4 landscape',
-     title: 'A simple example',
-     srs: 'EPSG:4326',
-     units: 'dd',
-     outputFilename: 'mapfish-print',
-     outputFormat: 'pdf',
-     layers: [{
-         type: 'WMS',
-         format: 'image/png',
-         layers: ['ch.swisstopo.geologie-eiszeit-lgm'],
-         baseURL: 'http://wms.geo.admin.ch'
-     }],
-     pages: [{
-         center: [7.5, 46.5],
-         scale: 1000000.0,
-         dpi: 150,
-         rotation: 0,
-         qrcodeurl: "https://api3.geo.admin.ch/qrcodegenerator?url=https%3A%2F%2Fmap.geo.admin.ch%2F%3Ftopic%3Dech%26lang%3Dfr%26bgLayer%3Dch.swisstopo.pixelkarte-farbe%26layers%3Dch.swisstopo.zeitreihen%2Cch.bfs.gebaeude_wohnungs_register%2Cch.bav.haltestellen-oev%2Cch.swisstopo.swisstlm3d-wanderwege%26layers_visibility%3Dfalse%2Cfalse%2Cfalse%2Cfalse%26layers_timestamp%3D18641231%2C%2C%2C",
-         dataOwner: "swisstopo",
-         mapTitle: "First map",
-         comment: "The \"routes\" layer is not shown (the scale is too small)",
-         data: [{
-             id: 1,
-             name: 'blah',
-             icon: 'icon_pan'
-         }, {
-             id: 2,
-             name: 'blip',
-             icon: 'icon_zoomin'
-         }]
-     }]
- }
+{
+    "layout": "1 A4 landscape",
+    "title": "A simple example",
+    "srs": "EPSG:21781",
+    "units": "m",
+    "outputFilename": "mapfish-print",
+    "outputFormat": "pdf",
+    "layers": [{
+        "layer": "ch.swisstopo.pixelkarte-farbe",
+        "opacity": 1,
+        "type": "WMTS",
+        "baseURL": "https://wmts.geo.admin.ch",
+        "maxExtent": [420000, 30000, 900000, 350000],
+        "tileOrigin": [420000, 350000],
+        "tileSize": [256, 256],
+        "resolutions": [4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000, 750, 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1.5],
+        "zoomOffset": 0,
+        "version": "1.0.0",
+        "requestEncoding": "REST",
+        "formatSuffix": "jpeg",
+        "style": "default",
+        "dimensions": ["TIME"],
+        "params": {
+            "TIME": "current"
+        },
+        "matrixSet": "21781"
+    }, {
+        "type": "WMS",
+        "opacity": 0.5,
+        "format": "image/png",
+        "layers": ["ch.swisstopo.geologie-eiszeit-lgm"],
+        "baseURL": "http://wms.geo.admin.ch"
+    }],
+    "pages": [{
+        "center": [660000, 190000.00000000006],
+        "bbox": [518536.1111111112, 96513.8888888889, 801463.8888888889, 283486.1111111112],
+        "display": [802, 530],
+        "scale": "1000000.0",
+        "dpi": 150,
+        "rotation": 0,
+        "qrcodeurl": "https://api3.geo.admin.ch/qrcodegenerator?url=https%3A%2F%2Fmap.geo.admin.c…ity%3Dfalse%2Cfalse%2Cfalse%2Cfalse%26layers_timestamp%3D18641231%2C%2C%2C",
+        "dataOwner": "© swisstopo,wms.geo.admin.ch",
+        "mapTitle": "First map",
+        "langfr": true,
+        "thirdPartyDataOwner": false,
+        "shortLink": "https://s.geo.admin.ch/6f8db9b085"
+    }]
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Access the logs
