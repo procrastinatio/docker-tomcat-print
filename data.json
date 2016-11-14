@@ -38,7 +38,7 @@
         "scale": "1000000.0",
         "dpi": 150,
         "rotation": 0,
-        "qrcodeurl": "https://api3.geo.admin.ch/qrcodegenerator?url=https%3A%2F%2Fmap.geo.admin.c…ity%3Dfalse%2Cfalse%2Cfalse%2Cfalse%26layers_timestamp%3D18641231%2C%2C%2C",
+        "qrcodeurl": "https://api3.geo.admin.ch/qrcodegenerator?url=https%3A%2F%2Fmap.geo.admin.ch%2F%3Ftopic%3Dech%26lang%3Dfr%26bgLayer%3Dch.swisstopo.pixelkarte-farbe%26layers%3Dch.swisstopo.zeitreihen%2Cch.bfs.gebaeude_wohnungs_register%2Cch.bav.haltestellen-oev%2Cch.swisstopo.swisstlm3d-wanderwege%2Cch.swisstopo.geologie-eiszeit-lgm%26layers_visibility%3Dfalse%2Cfalse%2Cfalse%2Cfalse%2Ctrue%26layers_timestamp%3D18641231%2C%2C%2C%2C%26X%3D207600.00%26Y%3D590000.00%26zoom%3D3%26layers_opacity%3D1%2C1%2C1%2C1%2C0.55",
         "dataOwner": "© swisstopo,wms.geo.admin.ch",
         "mapTitle": "First map",
         "langfr": true,
