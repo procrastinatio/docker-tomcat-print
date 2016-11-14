@@ -1,0 +1,33 @@
+ {
+     layout: '1 A4 landscape',
+     title: 'A simple example',
+     srs: 'EPSG:4326',
+     units: 'dd',
+     outputFilename: 'mapfish-print',
+     outputFormat: 'pdf',
+     layers: [{
+         type: 'WMS',
+         format: 'image/png',
+         layers: ['ch.swisstopo.geologie-eiszeit-lgm'],
+         baseURL: 'http://wms.geo.admin.ch'
+     }],
+     pages: [{
+         center: [7.5, 46.5],
+         scale: 1000000.0,
+         dpi: 150,
+         rotation: 0,
+         qrcodeurl: "https://api3.geo.admin.ch/qrcodegenerator?url=https%3A%2F%2Fmap.geo.admin.ch%2F%3Ftopic%3Dech%26lang%3Dfr%26bgLayer%3Dch.swisstopo.pixelkarte-farbe%26layers%3Dch.swisstopo.zeitreihen%2Cch.bfs.gebaeude_wohnungs_register%2Cch.bav.haltestellen-oev%2Cch.swisstopo.swisstlm3d-wanderwege%26layers_visibility%3Dfalse%2Cfalse%2Cfalse%2Cfalse%26layers_timestamp%3D18641231%2C%2C%2C",
+         dataOwner: "swisstopo",
+         mapTitle: "First map",
+         comment: "The \"routes\" layer is not shown (the scale is too small)",
+         data: [{
+             id: 1,
+             name: 'blah',
+             icon: 'icon_pan'
+         }, {
+             id: 2,
+             name: 'blip',
+             icon: 'icon_zoomin'
+         }]
+     }]
+ }
